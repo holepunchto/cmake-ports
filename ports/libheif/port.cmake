@@ -20,7 +20,7 @@ declare_port(
     "-DAOM_LIBRARY=${aom_PREFIX}/lib/libaom.a"
 
     "-DWITH_X265=OFF"
-    "-DWITH_OpenH264_ENCODER=OFF"
+    "-DWITH_OpenH264_DECODER=OFF"
     "-DWITH_AOM_ENCODER=OFF"
 )
 
