@@ -10,7 +10,7 @@ declare_port(
   DEPENDS
     aom
     de265
-  CMAKE_ARGS
+  ARGS
     "-DWITH_LIBDE265=ON"
     "-DLIBDE265_INCLUDE_DIR=${de265_PREFIX}/include"
     "-DLIBDE265_LIBRARY=${de265_PREFIX}/lib/libde265.a"

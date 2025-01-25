@@ -4,6 +4,8 @@ declare_port(
   "github:strukturag/libde265@1.0.15"
   de265
   BYPRODUCTS lib/libde265.a
+  ARGS
+    "-DENABLE_SDL=OFF"
 )
 
 add_library(de265 STATIC IMPORTED GLOBAL)
