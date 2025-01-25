@@ -29,6 +29,7 @@ function(declare_port specifier result)
   ExternalProject_Add(
     ${target}
     ${args}
+    UPDATE_DISCONNECTED ON
     PREFIX "${prefix}"
     CMAKE_ARGS
       "-DBUILD_SHARED_LIBS=OFF"
