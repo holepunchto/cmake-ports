@@ -1,6 +1,6 @@
 {
   "name": "cmake-ports",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple build recipe manager for CMake based on `ExternalProject`",
   "files": [
     "*.cmake",
