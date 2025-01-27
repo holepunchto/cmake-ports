@@ -6,6 +6,7 @@ declare_port(
   BYPRODUCTS lib/libde265.a
   PATCHES
     patches/01-windows-clang.patch
+    patches/02-getopt-const-pointer.patch
   ARGS
     "-DENABLE_SDL=OFF"
 )
