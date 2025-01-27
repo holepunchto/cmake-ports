@@ -10,6 +10,9 @@ declare_port(
   DEPENDS
     dav1d
     de265
+  PATCHES
+    patches/01-windows-deprecated-declarations.patch
+    patches/02-remove-doxygen.patch
   ARGS
     "-DBUILD_TESTING=OFF"
     "-DENABLE_PLUGIN_LOADING=OFF"
