@@ -69,13 +69,27 @@ macro(configure_meson_port)
 
   list(APPEND meson_args ${ARGV_ARGS})
 
+  if(CMAKE_HOST_WIN32)
+    find_program(
+      meson
+      NAMES meson.cmd meson
+      REQUIRED
+    )
+  else()
+    find_program(
+      meson
+      NAMES meson
+      REQUIRED
+    )
+  endif()
+
   list(APPEND args
     CONFIGURE_COMMAND
-      meson setup ${meson_args}
+      ${meson} setup ${meson_args}
     BUILD_COMMAND
-      meson compile -C ${prefix}/src/${target}-build
+      ${meson} compile -C ${prefix}/src/${target}-build
     INSTALL_COMMAND
-      meson install -C ${prefix}/src/${target}-build
+      ${meson} install -C ${prefix}/src/${target}-build
   )
 endmacro()
 
