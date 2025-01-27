@@ -22,6 +22,7 @@ declare_port(
     "-DLIBDE265_LIBRARY=${de265_PREFIX}/lib/libde265.a"
 
     "-DWITH_X265=OFF"
+    "-DWITH_OpenH264_ENCODER=OFF"
     "-DWITH_OpenH264_DECODER=OFF"
     "-DWITH_AOM_ENCODER=OFF"
     "-DWITH_AOM_DECODER=OFF"
