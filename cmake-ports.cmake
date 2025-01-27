@@ -54,6 +54,7 @@ endmacro()
 
 macro(configure_meson_port)
   meson_cross_file(cross)
+  meson_build_type(build_type)
 
   file(GENERATE OUTPUT "${prefix}/src/${target}-build/cross-file.txt" CONTENT "${cross}")
 
@@ -62,6 +63,7 @@ macro(configure_meson_port)
     ${prefix}/src/${target}-build
     --prefix=${prefix}
     --default-library=static
+    --buildtype=${build_type}
     --cross-file=${prefix}/src/${target}-build/cross-file.txt
   )
 
