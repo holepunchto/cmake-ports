@@ -12,6 +12,7 @@ declare_port(
     de265
   ARGS
     "-DBUILD_TESTING=OFF"
+    "-DENABLE_PLUGIN_LOADING=OFF"
 
     "-DWITH_DAV1D=ON"
     "-DDAV1D_INCLUDE_DIR=${dav1d_PREFIX}/include"
@@ -21,6 +22,9 @@ declare_port(
     "-DLIBDE265_INCLUDE_DIR=${de265_PREFIX}/include"
     "-DLIBDE265_LIBRARY=${de265_PREFIX}/lib/libde265.a"
 
+    "-DWITH_LIBSHARPYUV=OFF"
+    "-DWITH_EXAMPLES=OFF"
+    "-DWITH_GDK_PIXBUF=OFF"
     "-DWITH_X265=OFF"
     "-DWITH_OpenH264_ENCODER=OFF"
     "-DWITH_OpenH264_DECODER=OFF"
