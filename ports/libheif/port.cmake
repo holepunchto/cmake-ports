@@ -1,6 +1,6 @@
 include_guard(GLOBAL)
 
-find_port(aom)
+find_port(dav1d)
 find_port(libde265)
 
 declare_port(
@@ -8,20 +8,23 @@ declare_port(
   heif
   BYPRODUCTS lib/libheif.a
   DEPENDS
-    aom
+    dav1d
     de265
   ARGS
+    "-DBUILD_TESTING=OFF"
+
+    "-DWITH_DAV1D=ON"
+    "-DDAV1D_INCLUDE_DIR=${dav1d_PREFIX}/include"
+    "-DDAV1D_LIBRARY=${dav1d_PREFIX}/lib/libdav1d.a"
+
     "-DWITH_LIBDE265=ON"
     "-DLIBDE265_INCLUDE_DIR=${de265_PREFIX}/include"
     "-DLIBDE265_LIBRARY=${de265_PREFIX}/lib/libde265.a"
 
-    "-DWITH_AOM_DECODER=ON"
-    "-DAOM_INCLUDE_DIR=${aom_PREFIX}/include"
-    "-DAOM_LIBRARY=${aom_PREFIX}/lib/libaom.a"
-
     "-DWITH_X265=OFF"
     "-DWITH_OpenH264_DECODER=OFF"
     "-DWITH_AOM_ENCODER=OFF"
+    "-DWITH_AOM_DECODER=OFF"
 )
 
 add_library(heif STATIC IMPORTED GLOBAL)
@@ -44,6 +47,6 @@ target_include_directories(
 target_link_libraries(
   heif
   INTERFACE
-    aom
+    dav1d
     de265
 )

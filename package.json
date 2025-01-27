@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/holepunchto/cmake-ports#readme",
   "dependencies": {
-    "cmake-fetch": "^1.3.0"
+    "cmake-fetch": "^1.3.0",
+    "cmake-meson": "^1.0.0"
   }
 }
