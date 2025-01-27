@@ -89,6 +89,7 @@ function(declare_port specifier result)
     ARGS
     BYPRODUCTS
     DEPENDS
+    PATCHES
   )
 
   cmake_parse_arguments(
@@ -106,6 +107,10 @@ function(declare_port specifier result)
 
   list(TRANSFORM ARGV_BYPRODUCTS PREPEND "${prefix}/")
 
+  list(TRANSFORM ARGV_PATCHES PREPEND "${CMAKE_CURRENT_LIST_DIR}/")
+
+  list(JOIN ARGV_PATCHES "$<SEMICOLON>" patches)
+
   if(ARGV_MESON)
     configure_meson_port()
   else()
@@ -116,6 +121,7 @@ function(declare_port specifier result)
     ${target}
     ${args}
     PREFIX "${prefix}"
+    PATCH_COMMAND ${CMAKE_COMMAND} -DPATCHES=${patches} -P "${ports_module_dir}/patch.cmake"
     UPDATE_DISCONNECTED ON
     INSTALL_BYPRODUCTS ${ARGV_BYPRODUCTS}
     DEPENDS ${ARGV_DEPENDS}

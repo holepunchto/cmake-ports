@@ -4,6 +4,8 @@ declare_port(
   "github:strukturag/libde265@1.0.15"
   de265
   BYPRODUCTS lib/libde265.a
+  PATCHES
+    patches/01-windows-clang.patch
   ARGS
     "-DENABLE_SDL=OFF"
 )
