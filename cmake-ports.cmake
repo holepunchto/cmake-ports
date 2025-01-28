@@ -136,9 +136,17 @@ function(declare_port specifier result)
     ${args}
     PREFIX "${prefix}"
     PATCH_COMMAND ${CMAKE_COMMAND} -DPATCHES=${patches} -P "${ports_module_dir}/patch.cmake"
-    UPDATE_DISCONNECTED ON
     INSTALL_BYPRODUCTS ${ARGV_BYPRODUCTS}
     DEPENDS ${ARGV_DEPENDS}
+    UPDATE_DISCONNECTED ON
+    LOG_DOWNLOAD ON
+    LOG_UPDATE ON
+    LOG_PATCH ON
+    LOG_CONFIGURE ON
+    LOG_BUILD ON
+    LOG_INSTALL ON
+    LOG_MERGED_STDOUTERR ON
+    LOG_OUTPUT_ON_FAILURE ON
   )
 endfunction()
 
