@@ -64,3 +64,10 @@ target_link_libraries(
     dav1d
     de265
 )
+
+target_compile_definitions(
+  heif
+  INTERFACE
+    LIBHEIF_STATIC_BUILD=1
+    LIBHEIF_EXPORTS=0
+)
