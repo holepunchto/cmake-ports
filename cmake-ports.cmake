@@ -12,31 +12,31 @@ macro(configure_cmake_port)
     -S ${prefix}/src/${target}
     -B ${prefix}/src/${target}-build
     -G ${CMAKE_GENERATOR}
-    "-DBUILD_SHARED_LIBS=OFF"
-    "-DCMAKE_INSTALL_PREFIX=$<PATH:CMAKE_PATH,${prefix}>"
-    "-DCMAKE_TOOLCHAIN_FILE=$<PATH:CMAKE_PATH,${CMAKE_TOOLCHAIN_FILE}>"
-    "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
-    "-DCMAKE_MESSAGE_LOG_LEVEL=${CMAKE_MESSAGE_LOG_LEVEL}"
-    "-DCMAKE_MAKE_PROGRAM=$<PATH:CMAKE_PATH,${CMAKE_MAKE_PROGRAM}>"
+    -DBUILD_SHARED_LIBS=OFF
+    -DCMAKE_INSTALL_PREFIX=${prefix}
+    -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+    -DCMAKE_MESSAGE_LOG_LEVEL=${CMAKE_MESSAGE_LOG_LEVEL}
+    -DCMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
   )
 
   if(ANDROID)
     if(DEFINED ANDROID_PLATFORM)
       list(APPEND cmake_args
-        "-DANDROID_PLATFORM=${ANDROID_PLATFORM}"
+        -DANDROID_PLATFORM=${ANDROID_PLATFORM}
       )
     endif()
 
     if(DEFINED ANDROID_STL)
       list(APPEND cmake_args
-        "-DANDROID_STL=${ANDROID_STL}"
+        -DANDROID_STL=${ANDROID_STL}
       )
     endif()
   endif()
 
   if(APPLE)
     list(APPEND cmake_args
-      "-DCMAKE_MACOSX_BUNDLE=OFF"
+      -DCMAKE_MACOSX_BUNDLE=OFF
     )
   endif()
 
@@ -53,10 +53,10 @@ macro(configure_cmake_port)
 endmacro()
 
 macro(configure_meson_port)
-  meson_cross_file(cross)
+  meson_cross_file(cross_file)
   meson_buildtype(buildtype)
 
-  file(GENERATE OUTPUT "${prefix}/src/${target}-build/cross-file.txt" CONTENT "${cross}")
+  file(GENERATE OUTPUT "${prefix}/src/${target}-build/cross-file.txt" CONTENT "${cross_file}")
 
   set(meson_args
     ${prefix}/src/${target}
