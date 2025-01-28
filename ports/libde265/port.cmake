@@ -9,7 +9,10 @@ declare_port(
     patches/02-getopt-const-pointer.patch
     patches/03-clang-sse-flags.patch
   ARGS
-    "-DENABLE_SDL=OFF"
+    -DBUILD_SHARED_LIBS=OFF
+    -DENABLE_SDL=OFF
+    -DENABLE_DECODER=OFF
+    -DENABLE_ENCODER=OFF
 )
 
 add_library(de265 STATIC IMPORTED GLOBAL)

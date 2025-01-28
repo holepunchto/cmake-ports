@@ -9,15 +9,13 @@ include(ExternalProject)
 
 macro(configure_cmake_port)
   set(cmake_args
-    -S ${prefix}/src/${target}
-    -B ${prefix}/src/${target}-build
+    -S "${prefix}/src/${target}"
+    -B "${prefix}/src/${target}-build"
     -G ${CMAKE_GENERATOR}
-    -DBUILD_SHARED_LIBS=OFF
-    -DCMAKE_INSTALL_PREFIX=${prefix}
-    -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     -DCMAKE_MESSAGE_LOG_LEVEL=${CMAKE_MESSAGE_LOG_LEVEL}
-    -DCMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
+    -DCMAKE_TOOLCHAIN_FILE="$<PATH:CMAKE_PATH,${CMAKE_TOOLCHAIN_FILE}>"
+    -DCMAKE_MAKE_PROGRAM="$<PATH:CMAKE_PATH,${CMAKE_MAKE_PROGRAM}>"
   )
 
   if(ANDROID)
@@ -46,9 +44,9 @@ macro(configure_cmake_port)
     CONFIGURE_COMMAND
       ${CMAKE_COMMAND} ${cmake_args}
     BUILD_COMMAND
-      ${CMAKE_COMMAND} --build ${prefix}/src/${target}-build
+      ${CMAKE_COMMAND} --build "${prefix}/src/${target}-build"
     INSTALL_COMMAND
-      ${CMAKE_COMMAND} --install ${prefix}/src/${target}-build --prefix ${prefix}
+      ${CMAKE_COMMAND} --install "${prefix}/src/${target}-build" --prefix "${prefix}"
   )
 endmacro()
 
@@ -59,12 +57,12 @@ macro(configure_meson_port)
   file(GENERATE OUTPUT "${prefix}/src/${target}-build/cross-file.txt" CONTENT "${cross_file}")
 
   set(meson_args
-    ${prefix}/src/${target}
-    ${prefix}/src/${target}-build
-    --prefix=${prefix}
-    --default-library=static
+    "${prefix}/src/${target}"
+    "${prefix}/src/${target}-build"
     --buildtype=${buildtype}
-    --cross-file=${prefix}/src/${target}-build/cross-file.txt
+    --default-library=static
+    --prefix="${prefix}"
+    --cross-file="${prefix}/src/${target}-build/cross-file.txt"
   )
 
   list(APPEND meson_args ${ARGV_ARGS})
@@ -87,9 +85,9 @@ macro(configure_meson_port)
     CONFIGURE_COMMAND
       ${meson} setup ${meson_args}
     BUILD_COMMAND
-      ${meson} compile -C ${prefix}/src/${target}-build
+      ${meson} compile -C "${prefix}/src/${target}-build"
     INSTALL_COMMAND
-      ${meson} install -C ${prefix}/src/${target}-build
+      ${meson} install -C "${prefix}/src/${target}-build"
   )
 endmacro()
 
