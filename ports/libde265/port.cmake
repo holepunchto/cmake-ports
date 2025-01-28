@@ -27,3 +27,10 @@ target_include_directories(
   de265
   INTERFACE "${de265_PREFIX}/include"
 )
+
+target_compile_definitions(
+  de265
+  INTERFACE
+    LIBDE265_STATIC_BUILD=1
+    LIBDE265_EXPORTS=0
+)
