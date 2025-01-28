@@ -1,11 +1,5 @@
 include_guard(GLOBAL)
 
-if(WIN32)
-  set(enable_asm false)
-else()
-  set(enable_asm true)
-endif()
-
 declare_port(
   "git:code.videolan.org/videolan/dav1d#1.5.1"
   dav1d
@@ -14,7 +8,6 @@ declare_port(
   ARGS
     -Denable_tests=false
     -Denable_tools=false
-    -Denable_asm=${enable_asm}
 )
 
 add_library(dav1d STATIC IMPORTED GLOBAL)
