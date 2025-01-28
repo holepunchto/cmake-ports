@@ -14,8 +14,8 @@ macro(configure_cmake_port)
     -G ${CMAKE_GENERATOR}
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     -DCMAKE_MESSAGE_LOG_LEVEL=${CMAKE_MESSAGE_LOG_LEVEL}
-    -DCMAKE_TOOLCHAIN_FILE="$<PATH:CMAKE_PATH,${CMAKE_TOOLCHAIN_FILE}>"
-    -DCMAKE_MAKE_PROGRAM="$<PATH:CMAKE_PATH,${CMAKE_MAKE_PROGRAM}>"
+    "-DCMAKE_TOOLCHAIN_FILE=$<PATH:CMAKE_PATH,${CMAKE_TOOLCHAIN_FILE}>"
+    "-DCMAKE_MAKE_PROGRAM=$<PATH:CMAKE_PATH,${CMAKE_MAKE_PROGRAM}>"
   )
 
   if(ANDROID)
@@ -59,10 +59,10 @@ macro(configure_meson_port)
   set(meson_args
     "${prefix}/src/${target}"
     "${prefix}/src/${target}-build"
-    --buildtype=${buildtype}
-    --default-library=static
-    --prefix="${prefix}"
-    --cross-file="${prefix}/src/${target}-build/cross-file.txt"
+    --buildtype ${buildtype}
+    --default-library static
+    --prefix "${prefix}"
+    --cross-file "${prefix}/src/${target}-build/cross-file.txt"
   )
 
   list(APPEND meson_args ${ARGV_ARGS})
