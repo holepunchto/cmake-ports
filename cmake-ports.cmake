@@ -141,7 +141,6 @@ function(declare_port specifier result)
     UPDATE_DISCONNECTED ON
     LOG_DOWNLOAD ON
     LOG_UPDATE ON
-    LOG_PATCH ON
     LOG_CONFIGURE ON
     LOG_BUILD ON
     LOG_INSTALL ON
