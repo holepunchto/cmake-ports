@@ -7,6 +7,7 @@ declare_port(
   PATCHES
     patches/01-windows-clang.patch
     patches/02-getopt-const-pointer.patch
+    patches/03-clang-sse-flags.patch
   ARGS
     "-DENABLE_SDL=OFF"
 )
