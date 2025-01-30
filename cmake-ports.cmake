@@ -91,10 +91,40 @@ macro(configure_meson_port)
   )
 endmacro()
 
+macro(configure_autotools_port)
+  if(CMAKE_HOST_WIN32)
+    find_program(
+      make
+      NAMES make.cmd make
+      REQUIRED
+    )
+  else()
+    find_program(
+      make
+      NAMES make
+      REQUIRED
+    )
+  endif()
+
+  set(configure_args "--prefix=${prefix}")
+
+  list(APPEND configure_args ${ARGV_ARGS})
+
+  list(APPEND args
+    CONFIGURE_COMMAND
+      ${CMAKE_COMMAND} -E env PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ${prefix}/src/${target}/configure ${configure_args}
+    BUILD_COMMAND
+      ${make} --jobs 8
+    INSTALL_COMMAND
+      ${make} install
+  )
+endmacro()
+
 function(declare_port specifier result)
   set(option_keywords
     CMAKE
     MESON
+    AUTOTOOLS
   )
 
   set(multi_value_keywords
@@ -125,9 +155,13 @@ function(declare_port specifier result)
 
   if(ARGV_MESON)
     configure_meson_port()
+  elseif(ARGV_AUTOTOOLS)
+    configure_autotools_port()
   else()
     configure_cmake_port()
   endif()
+
+  set(ENV{PKG_CONFIG_PATH} "${prefix}/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
 
   ExternalProject_Add(
     ${target}
