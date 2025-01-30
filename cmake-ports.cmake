@@ -200,15 +200,13 @@ function(find_port name)
     include("${ports_module_dir}/ports/${name}/port.cmake")
   endif()
 
+  if(name MATCHES "^lib(.+)")
+    set(name "${CMAKE_MATCH_1}")
+  endif()
+
   foreach(feature IN LISTS features)
     if(NOT feature IN_LIST ${name}_FEATURES)
       message(FATAL_ERROR "Feature '${feature}' is not enabled for port '${name}'")
     endif()
   endforeach()
-
-  if(name MATCHES "^lib(.+)")
-    set(name "${CMAKE_MATCH_1}")
-  endif()
-
-  set(${name}_PREFIX "${${name}_PREFIX}" PARENT_SCOPE)
 endfunction()

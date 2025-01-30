@@ -1,9 +1,15 @@
 include_guard(GLOBAL)
 
+if(WIN32)
+  set(lib libde265.lib)
+else()
+  set(lib libde265.a)
+endif()
+
 declare_port(
   "github:strukturag/libde265@1.0.15"
   de265
-  BYPRODUCTS lib/libde265${CMAKE_STATIC_LIBRARY_SUFFIX}
+  BYPRODUCTS lib/${lib}
   PATCHES
     patches/01-windows-clang.patch
     patches/02-getopt-const-pointer.patch
@@ -22,7 +28,7 @@ add_dependencies(de265 ${de265})
 set_target_properties(
   de265
   PROPERTIES
-  IMPORTED_LOCATION "${de265_PREFIX}/lib/libde265${CMAKE_STATIC_LIBRARY_SUFFIX}"
+  IMPORTED_LOCATION "${de265_PREFIX}/lib/${lib}"
 )
 
 file(MAKE_DIRECTORY "${de265_PREFIX}/include")
