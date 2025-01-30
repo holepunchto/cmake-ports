@@ -143,9 +143,11 @@ function(declare_port specifier result)
   set(prefix "${CMAKE_CURRENT_BINARY_DIR}/_ports/${target}")
 
   set(${result} ${target} PARENT_SCOPE)
-  set(${result}_PREFIX "${prefix}" PARENT_SCOPE)
-  set(${result}_SOURCE_DIR "${prefix}/src/${target}" PARENT_SCOPE)
-  set(${result}_BINARY_DIR "${prefix}/src/${target}-build" PARENT_SCOPE)
+
+  set(${result}_PREFIX "${prefix}" CACHE INTERNAL "The prefix of the ${result} port")
+  set(${result}_SOURCE_DIR "${prefix}/src/${target}" CACHE INTERNAL "The source directory of the ${result} port")
+  set(${result}_BINARY_DIR "${prefix}/src/${target}-build" CACHE INTERNAL "The binary directory of the ${result} port")
+  set(${result}_FEATURES "${features}" CACHE INTERNAL "The list of features of the ${result} port")
 
   list(TRANSFORM ARGV_BYPRODUCTS PREPEND "${prefix}/")
 
@@ -182,11 +184,27 @@ function(declare_port specifier result)
 endfunction()
 
 function(find_port name)
+  set(multi_value_keywords
+    FEATURES
+  )
+
+  cmake_parse_arguments(
+    PARSE_ARGV 1 ARGV "" "" "${multi_value_keywords}"
+  )
+
+  set(features ${ARGV_FEATURES})
+
   include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/ports/${name}/port.cmake" OPTIONAL RESULT_VARIABLE path)
 
   if(path MATCHES "NOTFOUND")
     include("${ports_module_dir}/ports/${name}/port.cmake")
   endif()
+
+  foreach(feature IN LISTS features)
+    if(NOT feature IN_LIST ${name}_FEATURES)
+      message(FATAL_ERROR "Feature '${feature}' is not enabled for port '${name}'")
+    endif()
+  endforeach()
 
   if(name MATCHES "^lib(.+)")
     set(name "${CMAKE_MATCH_1}")
