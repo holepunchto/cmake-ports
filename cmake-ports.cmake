@@ -93,11 +93,7 @@ endmacro()
 
 macro(configure_autotools_port)
   if(CMAKE_HOST_WIN32)
-    find_program(
-      make
-      NAMES make.cmd make
-      REQUIRED
-    )
+    message(FATAL_ERROR "Autotools is not supported on Windows hosts")
   else()
     find_program(
       make
@@ -112,7 +108,7 @@ macro(configure_autotools_port)
 
   list(APPEND args
     CONFIGURE_COMMAND
-      ${CMAKE_COMMAND} -E env PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ${prefix}/src/${target}/configure ${configure_args}
+      ${CMAKE_COMMAND} -E env ${env} ${prefix}/src/${target}/configure ${configure_args}
     BUILD_COMMAND
       ${make} --jobs 8
     INSTALL_COMMAND
@@ -155,6 +151,8 @@ function(declare_port specifier result)
 
   list(JOIN ARGV_PATCHES "$<SEMICOLON>" patches)
 
+  set(env --modify "PKG_CONFIG_PATH=path_list_prepend:${prefix}/lib/pkgconfig")
+
   if(ARGV_MESON)
     configure_meson_port()
   elseif(ARGV_AUTOTOOLS)
@@ -162,8 +160,6 @@ function(declare_port specifier result)
   else()
     configure_cmake_port()
   endif()
-
-  set(ENV{PKG_CONFIG_PATH} "${prefix}/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
 
   ExternalProject_Add(
     ${target}
