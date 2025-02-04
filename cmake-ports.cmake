@@ -93,11 +93,22 @@ endmacro()
 
 macro(configure_autotools_port)
   if(CMAKE_HOST_WIN32)
-    message(FATAL_ERROR "Autotools is not supported on Windows hosts")
+    file(REAL_PATH "/tools/msys64" msys2)
+
+    find_program(
+      shell
+      NAMES bash
+      PATHS "${msys2}/usr/bin"
+      REQUIRED
+    )
+
+    list(APPEND env
+      --modify "PATH=path_list_prepend:${msys2}/usr/bin"
+    )
   else()
     find_program(
-      make
-      NAMES make
+      shell
+      NAMES bash
       REQUIRED
     )
   endif()
@@ -108,11 +119,11 @@ macro(configure_autotools_port)
 
   list(APPEND args
     CONFIGURE_COMMAND
-      ${CMAKE_COMMAND} -E env ${env} ${prefix}/src/${target}/configure ${configure_args}
+      ${CMAKE_COMMAND} -E env ${env} ${shell} ${prefix}/src/${target}/configure ${configure_args}
     BUILD_COMMAND
-      ${make} --jobs 8
+      ${CMAKE_COMMAND} -E env ${env} ${shell} -c "make --jobs 8"
     INSTALL_COMMAND
-      ${make} install
+      ${CMAKE_COMMAND} -E env ${env} ${shell} -c "make --jobs 8 install"
   )
 endmacro()
 
