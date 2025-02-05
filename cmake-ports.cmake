@@ -112,6 +112,8 @@ macro(configure_autotools_port)
       REQUIRED
       NO_DEFAULT_PATH
     )
+
+    list(TRANSFORM env REPLACE "path_list_(append|prepend):([A-Z]):" "path_list_\\1:/\\2")
   else()
     find_program(
       bash
