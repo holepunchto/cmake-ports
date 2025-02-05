@@ -95,20 +95,33 @@ macro(configure_autotools_port)
   if(CMAKE_HOST_WIN32)
     file(REAL_PATH "/tools/msys64" msys2)
 
+    list(APPEND env --modify "PATH=path_list_prepend:${msys2}/usr/bin")
+
     find_program(
-      shell
+      bash
       NAMES bash
       PATHS "${msys2}/usr/bin"
       REQUIRED
+      NO_DEFAULT_PATH
     )
 
-    list(APPEND env
-      --modify "PATH=path_list_prepend:${msys2}/usr/bin"
+    find_program(
+      make
+      NAMES make
+      PATHS "${msys2}/usr/bin"
+      REQUIRED
+      NO_DEFAULT_PATH
     )
   else()
     find_program(
-      shell
+      bash
       NAMES bash
+      REQUIRED
+    )
+
+    find_program(
+      make
+      NAMES make
       REQUIRED
     )
   endif()
@@ -119,11 +132,11 @@ macro(configure_autotools_port)
 
   list(APPEND args
     CONFIGURE_COMMAND
-      ${CMAKE_COMMAND} -E env ${env} ${shell} ${prefix}/src/${target}/configure ${configure_args}
+      ${CMAKE_COMMAND} -E env ${env} ${bash} ${prefix}/src/${target}/configure ${configure_args}
     BUILD_COMMAND
-      ${CMAKE_COMMAND} -E env ${env} ${shell} -c "make --jobs 8"
+      ${CMAKE_COMMAND} -E env ${env} ${make} --jobs 8
     INSTALL_COMMAND
-      ${CMAKE_COMMAND} -E env ${env} ${shell} -c "make --jobs 8 install"
+      ${CMAKE_COMMAND} -E env ${env} ${make} --jobs 8 install
   )
 endmacro()
 
@@ -139,6 +152,7 @@ function(declare_port specifier result)
     BYPRODUCTS
     DEPENDS
     PATCHES
+    ENV
   )
 
   cmake_parse_arguments(
@@ -162,7 +176,7 @@ function(declare_port specifier result)
 
   list(JOIN ARGV_PATCHES "$<SEMICOLON>" patches)
 
-  set(env --modify "PKG_CONFIG_PATH=path_list_prepend:${prefix}/lib/pkgconfig")
+  set(env ${ARGV_ENV})
 
   if(ARGV_MESON)
     configure_meson_port()
