@@ -93,7 +93,11 @@ endmacro()
 
 macro(configure_autotools_port)
   if(CMAKE_HOST_WIN32)
-    file(REAL_PATH "/tools/msys64" msys2)
+    find_path(
+      msys2
+      NAMES msys2.exe
+      REQUIRED
+    )
 
     list(APPEND env --modify "PATH=path_list_prepend:${msys2}/usr/bin")
 
