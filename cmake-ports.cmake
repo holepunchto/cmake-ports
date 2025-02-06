@@ -197,6 +197,7 @@ function(declare_port specifier result)
     ${args}
     PREFIX "${prefix}"
     PATCH_COMMAND ${CMAKE_COMMAND} -DPATCHES=${patches} -P "${ports_module_dir}/patch.cmake"
+    STEP_TARGETS install
     INSTALL_BYPRODUCTS ${ARGV_BYPRODUCTS}
     DEPENDS ${ARGV_DEPENDS}
     UPDATE_DISCONNECTED ON
@@ -207,6 +208,20 @@ function(declare_port specifier result)
     LOG_INSTALL ON
     LOG_MERGED_STDOUTERR ON
     LOG_OUTPUT_ON_FAILURE ON
+  )
+
+  ExternalProject_Add_Step(
+    ${target}
+    fixup
+    COMMAND ${CMAKE_COMMAND} -P "${ports_module_dir}/fixup.cmake"
+    WORKING_DIRECTORY "${prefix}"
+    ALWAYS TRUE
+  )
+
+  ExternalProject_Add_StepDependencies(
+    ${target}
+    fixup
+    ${target}-install
   )
 endfunction()
 
