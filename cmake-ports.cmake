@@ -153,6 +153,8 @@ function(declare_port specifier result)
     AUTOTOOLS
   )
 
+  set(one_value_keywords BOOTSTRAP)
+
   set(multi_value_keywords
     ARGS
     BYPRODUCTS
@@ -162,7 +164,7 @@ function(declare_port specifier result)
   )
 
   cmake_parse_arguments(
-    PARSE_ARGV 1 ARGV "${option_keywords}" "" "${multi_value_keywords}"
+    PARSE_ARGV 1 ARGV "${option_keywords}" ${one_value_keywords} "${multi_value_keywords}"
   )
 
   parse_fetch_specifier(${specifier} target args)
@@ -209,6 +211,17 @@ function(declare_port specifier result)
     LOG_MERGED_STDOUTERR ON
     LOG_OUTPUT_ON_FAILURE ON
   )
+
+  if(ARGV_AUTOTOOLS AND ARGV_BOOTSTRAP)
+    ExternalProject_Add_Step(
+      ${target}
+      bootstrap
+      COMMAND ${CMAKE_COMMAND} -E env ${env} ${bash} ${prefix}/src/${target}/bootstrap.sh
+      WORKING_DIRECTORY ${prefix}/src/${target}
+      DEPENDEES download
+      DEPENDERS configure
+    )
+  endif()
 
   ExternalProject_Add_Step(
     ${target}
