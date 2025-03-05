@@ -153,6 +153,8 @@ function(declare_port specifier result)
     AUTOTOOLS
   )
 
+  set(one_value_keywords BINARY_DIR)
+
   set(multi_value_keywords
     ARGS
     BYPRODUCTS
@@ -162,7 +164,7 @@ function(declare_port specifier result)
   )
 
   cmake_parse_arguments(
-    PARSE_ARGV 1 ARGV "${option_keywords}" "" "${multi_value_keywords}"
+    PARSE_ARGV 1 ARGV "${option_keywords}" "${one_value_keywords}" "${multi_value_keywords}"
   )
 
   parse_fetch_specifier(${specifier} target args)
@@ -200,6 +202,7 @@ function(declare_port specifier result)
     STEP_TARGETS install
     INSTALL_BYPRODUCTS ${ARGV_BYPRODUCTS}
     DEPENDS ${ARGV_DEPENDS}
+    BINARY_DIR ${ARGV_BINARY_DIR}
     UPDATE_DISCONNECTED ON
     LOG_DOWNLOAD ON
     LOG_UPDATE ON
