@@ -2,6 +2,7 @@ include_guard()
 
 find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
 find_package(cmake-meson REQUIRED PATHS node_modules/cmake-meson)
+find_package(cmake-zig REQUIRED PATHS node_modules/cmake-zig)
 
 set(ports_module_dir "${CMAKE_CURRENT_LIST_DIR}")
 
@@ -146,11 +147,62 @@ macro(configure_autotools_port)
   )
 endmacro()
 
+macro(configure_zig_port)
+  zig_target(zig_target)
+  zig_optimize(zig_optimize)
+
+  set(zig_args
+    --prefix "${prefix}"
+    --build-file "${prefix}/src/${target}/build.zig"
+    --cache-dir "${prefix}/src/${target}-build"
+    -Dtarget=${zig_target}
+    -Doptimize=${zig_optimize}
+  )
+
+  if(APPLE)
+    list(APPEND zig_args
+      --sysroot "${CMAKE_OSX_SYSROOT}"
+      --search-prefix "${CMAKE_OSX_SYSROOT}/usr"
+    )
+  endif()
+
+  if(ANDROID)
+    list(APPEND zig_args
+      --sysroot "${CMAKE_SYSROOT}"
+      --search-prefix "${CMAKE_SYSROOT}/usr"
+      --search-prefix "${CMAKE_SYSROOT}/usr/include/${zig_target}"
+    )
+  endif()
+
+  list(APPEND zig_args ${ARGV_ARGS})
+
+  if(CMAKE_HOST_WIN32)
+    find_program(
+      zig
+      NAMES zig.cmd zig
+      REQUIRED
+    )
+  else()
+    find_program(
+      zig
+      NAMES zig
+      REQUIRED
+    )
+  endif()
+
+  list(APPEND args
+    CONFIGURE_COMMAND ${zig} version
+    BUILD_COMMAND ${zig} build ${zig_args}
+    INSTALL_COMMAND ${zig} zen
+  )
+endmacro()
+
 function(declare_port specifier result)
   set(option_keywords
     CMAKE
     MESON
     AUTOTOOLS
+    ZIG
   )
 
   set(multi_value_keywords
@@ -188,6 +240,8 @@ function(declare_port specifier result)
     configure_meson_port()
   elseif(ARGV_AUTOTOOLS)
     configure_autotools_port()
+  elseif(ARGV_ZIG)
+    configure_zig_port()
   else()
     configure_cmake_port()
   endif()
