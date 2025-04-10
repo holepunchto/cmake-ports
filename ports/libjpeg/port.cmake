@@ -1,7 +1,7 @@
 include_guard(GLOBAL)
 
 if(WIN32)
-  set(lib lib/jpeg.lib)
+  set(lib lib/jpeg-static.lib)
 elseif(LINUX OR ANDROID)
   if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(lib lib64/libjpeg.a)
