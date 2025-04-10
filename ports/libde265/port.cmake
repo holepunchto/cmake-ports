@@ -14,6 +14,7 @@ declare_port(
     patches/01-windows-clang.patch
     patches/02-getopt-const-pointer.patch
     patches/03-clang-sse-flags.patch
+    patches/04-msvc-runtime-policy.patch
   ARGS
     -DBUILD_SHARED_LIBS=OFF
     -DENABLE_SDL=OFF
