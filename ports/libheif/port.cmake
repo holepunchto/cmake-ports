@@ -50,6 +50,26 @@ else()
   list(APPEND args -DWITH_LIBDE265=OFF)
 endif()
 
+if("jpeg" IN_LIST features)
+  find_port(libjpeg)
+
+  list(APPEND depends jpeg)
+
+  list(APPEND args
+    -DWITH_JPEG_DECODER=ON
+    -DWITH_JPEG_ENCODER=ON
+    "-DJPEG_INCLUDE_DIR=$<TARGET_PROPERTY:jpeg,INTERFACE_INCLUDE_DIRECTORIES>"
+    "-DJPEG_LIBRARY=$<TARGET_FILE:jpeg>"
+  )
+
+  target_link_libraries(heif INTERFACE jpeg)
+else()
+  list(APPEND args
+    -DWITH_JPEG_DECODER=OFF
+    -DWITH_JPEG_ENCODER=OFF
+  )
+endif()
+
 if(WIN32)
   set(lib heif.lib)
 else()
