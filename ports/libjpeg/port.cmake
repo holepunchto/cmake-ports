@@ -7,7 +7,7 @@ else()
 endif()
 
 declare_port(
-  "github:winlibs/libjpeg#libjpeg-turbo-3.0.3"
+  "github:libjpeg-turbo/libjpeg-turbo@3.1.0"
   jpeg
   BYPRODUCTS lib/${lib}
 )
