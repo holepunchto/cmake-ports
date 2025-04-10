@@ -1,7 +1,7 @@
 include_guard(GLOBAL)
 
 if(WIN32)
-  set(lib lib/libjpeg.lib)
+  set(lib lib/jpeg.lib)
 elseif(LINUX)
   set(lib lib64/libjpeg.a)
 else()
