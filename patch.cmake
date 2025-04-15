@@ -12,7 +12,9 @@ else()
   )
 endif()
 
-foreach(patch IN LISTS PATCHES)
+string(REPLACE ":" ";" patches "${PATCHES}")
+
+foreach(patch IN LISTS patches)
   get_filename_component(patch "${patch}" REALPATH)
 
   execute_process(
