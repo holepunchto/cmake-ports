@@ -232,7 +232,7 @@ function(declare_port specifier result)
 
   list(TRANSFORM ARGV_PATCHES PREPEND "${CMAKE_CURRENT_LIST_DIR}/")
 
-  list(JOIN ARGV_PATCHES ":" patches)
+  list(JOIN ARGV_PATCHES "$<SEMICOLON>" patches)
 
   set(env ${ARGV_ENV})
 
