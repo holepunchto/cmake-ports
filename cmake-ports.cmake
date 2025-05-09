@@ -248,7 +248,7 @@ function(declare_port specifier result)
 
   if(ARGV_MESON)
     configure_meson_port()
-  elseif(ARGV_AUTOTOOLS OR ARGV_ENTRYPOINT)
+  elseif(ARGV_AUTOTOOLS)
     configure_autotools_port()
   elseif(ARGV_ZIG)
     configure_zig_port()
