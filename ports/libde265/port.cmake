@@ -1,5 +1,15 @@
 include_guard(GLOBAL)
 
+include(CheckCXXSymbolExists)
+
+check_cxx_symbol_exists(_LIBCPP_VERSION cstdlib HAVE_LIBCPP)
+
+if(HAVE_LIBCPP)
+  set(libc++ "-lc++")
+else()
+  set(libc++ "-lstdc++")
+endif()
+
 if(WIN32)
   set(lib libde265.lib)
 else()
@@ -44,4 +54,10 @@ target_compile_definitions(
   INTERFACE
     LIBDE265_STATIC_BUILD=1
     LIBDE265_EXPORTS=0
+)
+
+target_link_libraries(
+  de265
+  INTERFACE
+    ${libc++}
 )

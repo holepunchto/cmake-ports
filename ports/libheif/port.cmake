@@ -1,5 +1,15 @@
 include_guard(GLOBAL)
 
+include(CheckCXXSymbolExists)
+
+check_cxx_symbol_exists(_LIBCPP_VERSION cstdlib HAVE_LIBCPP)
+
+if(HAVE_LIBCPP)
+  set(libc++ "-lc++")
+else()
+  set(libc++ "-lstdc++")
+endif()
+
 add_library(heif STATIC IMPORTED GLOBAL)
 
 set(args
@@ -108,4 +118,10 @@ target_compile_definitions(
   INTERFACE
     LIBHEIF_STATIC_BUILD=1
     LIBHEIF_EXPORTS=0
+)
+
+target_link_libraries(
+  heif
+  INTERFACE
+    ${libc++}
 )
