@@ -137,9 +137,15 @@ macro(configure_autotools_port)
 
   list(APPEND configure_args ${ARGV_ARGS})
 
+  if(ARGV_ENTRYPOINT)
+    set(configure_script ${ARGV_ENTRYPOINT})
+  else()
+    set(configure_script ${prefix}/src/${target}/configure)
+  endif()
+
   list(APPEND args
     CONFIGURE_COMMAND
-      ${CMAKE_COMMAND} -E env ${env} ${bash} ${prefix}/src/${target}/configure ${configure_args}
+      ${CMAKE_COMMAND} -E env ${env} ${bash} ${configure_script} ${configure_args}
     BUILD_COMMAND
       ${CMAKE_COMMAND} -E env ${env} ${make} --jobs 8
     INSTALL_COMMAND
@@ -205,6 +211,10 @@ function(declare_port specifier result)
     ZIG
   )
 
+  set(one_value_keywords
+    ENTRYPOINT
+  )
+
   set(multi_value_keywords
     ARGS
     BYPRODUCTS
@@ -214,7 +224,7 @@ function(declare_port specifier result)
   )
 
   cmake_parse_arguments(
-    PARSE_ARGV 1 ARGV "${option_keywords}" "" "${multi_value_keywords}"
+    PARSE_ARGV 1 ARGV "${option_keywords}" "${one_value_keywords}" "${multi_value_keywords}"
   )
 
   parse_fetch_specifier(${specifier} target args)
