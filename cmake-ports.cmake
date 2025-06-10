@@ -143,9 +143,7 @@ macro(configure_autotools_port)
     string(REGEX REPLACE "^([A-Z]):" "/\\1" configure_script "${configure_script}")
   endif()
 
-  set(configure_args "--prefix=${prefix}")
-
-  list(APPEND configure_args ${ARGV_ARGS})
+  set(configure_args "--prefix=${prefix}" ${ARGV_ARGS})
 
   list(APPEND args
     CONFIGURE_COMMAND
