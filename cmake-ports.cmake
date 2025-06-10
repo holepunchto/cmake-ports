@@ -133,15 +133,25 @@ macro(configure_autotools_port)
     )
   endif()
 
-  set(configure_args "--prefix=${prefix}")
-
-  list(APPEND configure_args ${ARGV_ARGS})
-
   if(ARGV_ENTRYPOINT)
     set(configure_script ${ARGV_ENTRYPOINT})
   else()
     set(configure_script ${prefix}/src/${target}/configure)
   endif()
+
+  if(CMAKE_HOST_WIN32)
+    string(REGEX REPLACE "^([A-Z]):" "/\\1" configure_script "${configure_script}")
+  endif()
+
+  set(configure_prefix "${prefix}")
+
+  if(CMAKE_HOST_WIN32)
+    string(REGEX REPLACE "^([A-Z]):" "/\\1" configure_prefix "${configure_prefix}")
+  endif()
+
+  set(configure_args "--prefix=${configure_prefix}")
+
+  list(APPEND configure_args ${ARGV_ARGS})
 
   list(APPEND args
     CONFIGURE_COMMAND
