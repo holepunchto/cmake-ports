@@ -98,6 +98,7 @@ macro(configure_autotools_port)
     find_path(
       msys2
       NAMES msys2.exe
+      PATHS "C:/tools/msys64"
       REQUIRED
     )
 
