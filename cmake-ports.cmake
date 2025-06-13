@@ -72,6 +72,7 @@ macro(configure_meson_port)
     find_program(
       meson
       NAMES meson.cmd meson
+      PATHS "C:/Program Files/Meson"
       REQUIRED
     )
   else()
