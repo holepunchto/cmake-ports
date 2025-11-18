@@ -86,11 +86,11 @@ macro(configure_meson_port)
 
   list(APPEND args
     CONFIGURE_COMMAND
-      ${meson} setup ${meson_args}
+      ${CMAKE_COMMAND} -E env ${env} ${meson} setup ${meson_args}
     BUILD_COMMAND
-      ${meson} compile -C "${prefix}/src/${target}-build"
+      ${CMAKE_COMMAND} -E env ${env} ${meson} compile -C "${prefix}/src/${target}-build"
     INSTALL_COMMAND
-      ${meson} install -C "${prefix}/src/${target}-build"
+      ${CMAKE_COMMAND} -E env ${env} ${meson} install -C "${prefix}/src/${target}-build"
   )
 endmacro()
 
