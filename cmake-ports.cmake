@@ -233,6 +233,7 @@ function(declare_port specifier result)
   set(prefix "${CMAKE_CURRENT_BINARY_DIR}/_ports/${target}")
 
   set(${result} ${target} PARENT_SCOPE)
+  set(${result} ${target} CACHE INTERNAL "The target name of the ${result} port")
 
   set(${result}_PREFIX "${prefix}" CACHE INTERNAL "The prefix of the ${result} port")
   set(${result}_SOURCE_DIR "${prefix}/src/${target}" CACHE INTERNAL "The source directory of the ${result} port")
