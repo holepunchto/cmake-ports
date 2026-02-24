@@ -12,6 +12,16 @@ else()
   )
 endif()
 
+execute_process(
+  COMMAND ${git} init
+  RESULT_VARIABLE result
+  ERROR_VARIABLE error
+)
+
+if(NOT result EQUAL 0)
+  message(FATAL_ERROR "Repository could not be initialized: ${error}")
+endif()
+
 string(REPLACE "$<SEMICOLON>" ";" patches "${PATCHES}")
 
 foreach(patch IN LISTS patches)
