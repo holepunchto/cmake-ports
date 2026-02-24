@@ -146,6 +146,8 @@ macro(configure_autotools_port)
 
   list(APPEND args
     CONFIGURE_COMMAND
+      ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${prefix}/src/${target} -P "${ports_module_dir}/autoreconf.cmake"
+      COMMAND
       ${CMAKE_COMMAND} -E env ${env} ${bash} ${configure_script} ${configure_args}
     BUILD_COMMAND
       ${CMAKE_COMMAND} -E env ${env} ${make} --jobs 8
