@@ -14,6 +14,7 @@ endif()
 
 execute_process(
   COMMAND ${git} init
+  OUTPUT_QUIET
   RESULT_VARIABLE result
   ERROR_VARIABLE error
 )
