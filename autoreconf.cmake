@@ -1,4 +1,4 @@
-if(EXISTS "configure")
+if(EXISTS "${WORKING_DIRECTORY}/configure")
   return()
 endif()
 
