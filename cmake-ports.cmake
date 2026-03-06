@@ -189,7 +189,6 @@ macro(configure_zig_port)
     list(APPEND zig_args
       --sysroot "${CMAKE_SYSROOT}"
       --search-prefix "${CMAKE_SYSROOT}/usr"
-      --search-prefix "${CMAKE_SYSROOT}/usr/include/${zig_target}"
     )
   endif()
 
