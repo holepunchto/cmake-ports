@@ -17,7 +17,7 @@ else()
 endif()
 
 declare_port(
-  "github:strukturag/libde265@1.0.15"
+  "github:strukturag/libde265@1.0.16"
   de265
   BYPRODUCTS lib/${lib}
   PATCHES
