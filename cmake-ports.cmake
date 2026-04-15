@@ -131,7 +131,7 @@ macro(configure_autotools_port)
 
     find_program(
       make
-      NAMES make
+      NAMES gmake make
       REQUIRED
     )
   endif()
