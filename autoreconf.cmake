@@ -39,8 +39,14 @@ else()
   )
 endif()
 
+set(args -vfi)
+
+if(EXISTS "${WORKING_DIRECTORY}/m4")
+  list(APPEND args -I m4)
+endif()
+
 execute_process(
-  COMMAND ${CMAKE_COMMAND} -E env ${env} ${autoreconf} -vfi
+  COMMAND ${CMAKE_COMMAND} -E env ${env} ${autoreconf} ${args}
   WORKING_DIRECTORY "${WORKING_DIRECTORY}"
   RESULT_VARIABLE result
   ERROR_VARIABLE error
