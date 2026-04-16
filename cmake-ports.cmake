@@ -248,6 +248,7 @@ function(declare_port specifier result)
   set(${result}_PREFIX "${prefix}" CACHE INTERNAL "The prefix of the ${result} port")
   set(${result}_SOURCE_DIR "${prefix}/src/${target}" CACHE INTERNAL "The source directory of the ${result} port")
   set(${result}_BINARY_DIR "${prefix}/src/${target}-build" CACHE INTERNAL "The binary directory of the ${result} port")
+  set(${result}_STAMP_DIR "${prefix}/src/${target}-stamp" CACHE INTERNAL "The timestamp directory of the ${result} port")
   set(${result}_FEATURES "${features}" CACHE INTERNAL "The list of features of the ${result} port")
 
   list(TRANSFORM ARGV_BYPRODUCTS PREPEND "${prefix}/")
