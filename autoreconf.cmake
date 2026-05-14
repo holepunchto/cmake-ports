@@ -1,4 +1,4 @@
-if(EXISTS "${WORKING_DIRECTORY}/configure")
+if(EXISTS "${WORKING_DIRECTORY}/configure" OR EXISTS "${WORKING_DIRECTORY}/autogen.sh")
   return()
 endif()
 
