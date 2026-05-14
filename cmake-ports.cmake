@@ -137,9 +137,11 @@ macro(configure_autotools_port)
   endif()
 
   if(ARGV_ENTRYPOINT)
-    set(configure_script ${ARGV_ENTRYPOINT})
+    set(configure_script "${ARGV_ENTRYPOINT}")
+  elseif(EXISTS "${prefix}/src/${target}/autogen.sh")
+    set(configure_script "${prefix}/src/${target}/autogen.sh")
   else()
-    set(configure_script ${prefix}/src/${target}/configure)
+    set(configure_script "${prefix}/src/${target}/configure")
   endif()
 
   if(CMAKE_HOST_WIN32)
@@ -156,7 +158,7 @@ macro(configure_autotools_port)
 
   list(APPEND args
     CONFIGURE_COMMAND
-      ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${prefix}/src/${target} -P "${ports_module_dir}/autoreconf.cmake"
+      ${CMAKE_COMMAND} "-DWORKING_DIRECTORY=${prefix}/src/${target}" -P "${ports_module_dir}/autoreconf.cmake"
       COMMAND
       ${CMAKE_COMMAND} -E env ${env} ${bash} ${configure_script} ${configure_args}
     BUILD_COMMAND
