@@ -138,8 +138,9 @@ macro(configure_autotools_port)
 
   if(ARGV_ENTRYPOINT)
     set(configure_script "${ARGV_ENTRYPOINT}")
-  elseif(EXISTS "${prefix}/src/${target}/autogen.sh")
-    set(configure_script "${prefix}/src/${target}/autogen.sh")
+
+    string(REPLACE "<SOURCE_DIR>" "${prefix}/src/${target}" configure_script "${configure_script}")
+    string(REPLACE "<BINARY_DIR>" "${prefix}/src/${target}-build" configure_script "${configure_script}")
   else()
     set(configure_script "${prefix}/src/${target}/configure")
   endif()
@@ -156,10 +157,16 @@ macro(configure_autotools_port)
 
   set(configure_args "--prefix=${configure_prefix}" ${ARGV_ARGS})
 
-  list(APPEND args
-    CONFIGURE_COMMAND
+  list(APPEND args CONFIGURE_COMMAND)
+
+  if(NOT ARGV_ENTRYPOINT)
+    list(APPEND args
       ${CMAKE_COMMAND} "-DWORKING_DIRECTORY=${prefix}/src/${target}" -P "${ports_module_dir}/autoreconf.cmake"
       COMMAND
+    )
+  endif()
+
+  list(APPEND args
       ${CMAKE_COMMAND} -E env ${env} ${bash} ${configure_script} ${configure_args}
     BUILD_COMMAND
       ${CMAKE_COMMAND} -E env ${env} ${make} --jobs 8
