@@ -8,6 +8,12 @@ set(ports_module_dir "${CMAKE_CURRENT_LIST_DIR}")
 
 include(ExternalProject)
 
+cmake_host_system_information(RESULT jobs QUERY NUMBER_OF_LOGICAL_CORES)
+
+if(jobs EQUAL 0)
+  set(jobs 1)
+endif()
+
 macro(configure_cmake_port)
   set(cmake_args
     -S "${prefix}/src/${target}"
@@ -169,9 +175,9 @@ macro(configure_autotools_port)
   list(APPEND args
       ${CMAKE_COMMAND} -E env ${env} ${bash} ${configure_script} ${configure_args}
     BUILD_COMMAND
-      ${CMAKE_COMMAND} -E env ${env} ${make} --jobs 8
+      ${CMAKE_COMMAND} -E env ${env} ${make} --jobs ${jobs}
     INSTALL_COMMAND
-      ${CMAKE_COMMAND} -E env ${env} ${make} --jobs 8 install
+      ${CMAKE_COMMAND} -E env ${env} ${make} --jobs ${jobs} install
   )
 endmacro()
 
