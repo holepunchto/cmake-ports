@@ -247,6 +247,7 @@ function(declare_port specifier result)
     BYPRODUCTS
     DEPENDS
     PATCHES
+    WRAPS
     ENV
   )
 
@@ -271,6 +272,10 @@ function(declare_port specifier result)
   list(TRANSFORM ARGV_PATCHES PREPEND "${CMAKE_CURRENT_LIST_DIR}/")
 
   list(JOIN ARGV_PATCHES "$<SEMICOLON>" patches)
+
+  list(TRANSFORM ARGV_WRAPS PREPEND "${CMAKE_CURRENT_LIST_DIR}/")
+
+  list(JOIN ARGV_WRAPS "$<SEMICOLON>" wraps)
 
   set(env ${ARGV_ENV})
 
@@ -301,6 +306,16 @@ function(declare_port specifier result)
     LOG_MERGED_STDOUTERR ON
     LOG_OUTPUT_ON_FAILURE ON
   )
+
+  if(ARGV_WRAPS)
+    ExternalProject_Add_Step(
+      ${target}
+      wraps
+      COMMAND ${CMAKE_COMMAND} -DWRAPS=${wraps} "-DDESTINATION=${prefix}/src/${target}/subprojects" -P "${ports_module_dir}/wrap.cmake"
+      DEPENDEES patch
+      DEPENDERS configure
+    )
+  endif()
 
   ExternalProject_Add_Step(
     ${target}
