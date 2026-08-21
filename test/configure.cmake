@@ -44,7 +44,10 @@ block()
   expect_contains("cmake port passes ARGS" "${args}" "-DEXAMPLE_OPTION=ON")
 endblock()
 
-# An autotools port runs the entrypoint rather than cmake.
+# An autotools port runs the entrypoint rather than cmake. Only checked off
+# Windows: on a Windows host the macro requires msys2 at C:/tools/msys64, which a
+# plain runner does not have.
+if(NOT CMAKE_HOST_WIN32)
 block()
   set(args)
   set(ARGV_ARGS --enable-example)
@@ -56,5 +59,6 @@ block()
   expect_contains("autotools port passes ARGS" "${args}" "--enable-example")
   expect_excludes("autotools port does not configure with cmake" "${args}" "-DCMAKE_INSTALL_PREFIX")
 endblock()
+endif()
 
 message(STATUS "configure: ok")
