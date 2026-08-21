@@ -6,8 +6,6 @@ find_package(cmake-zig REQUIRED PATHS node_modules/cmake-zig)
 
 set(ports_module_dir "${CMAKE_CURRENT_LIST_DIR}")
 
-include(ExternalProject)
-
 cmake_host_system_information(RESULT jobs QUERY NUMBER_OF_LOGICAL_CORES)
 
 if(jobs EQUAL 0)
@@ -231,6 +229,8 @@ macro(configure_zig_port)
 endmacro()
 
 function(declare_port specifier result)
+  include(ExternalProject)
+
   set(option_keywords
     CMAKE
     MESON
