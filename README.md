@@ -12,7 +12,7 @@ find_package(cmake-ports REQUIRED PATHS node_modules/cmake-ports)
 
 ## API
 
-#### `declare_port(<specifier> <result> [CMAKE | MESON | AUTOTOOLS | ZIG] [ENTRYPOINT <script>] [ARGS <arg...>] [BYPRODUCTS <path...>] [DEPENDS <target...>] [PATCHES <path...>] [WRAPS <path...>] [ENV <key=value...>])`
+#### `declare_port(<specifier> <result> [CMAKE | MESON | AUTOTOOLS | ZIG] [ENTRYPOINT <script>] [SUBMODULES <ON|OFF>] [ARGS <arg...>] [BYPRODUCTS <path...>] [DEPENDS <target...>] [PATCHES <path...>] [WRAPS <path...>] [ENV <key=value...>])`
 
 Declare a port that fetches, builds, and installs an external project into a private prefix. A port is realized as an [`ExternalProject`](https://cmake.org/cmake/help/latest/module/ExternalProject.html) target named after the resolved package.
 

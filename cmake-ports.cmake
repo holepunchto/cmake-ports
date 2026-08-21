@@ -240,6 +240,7 @@ function(declare_port specifier result)
 
   set(one_value_keywords
     ENTRYPOINT
+    SUBMODULES
   )
 
   set(multi_value_keywords
@@ -256,6 +257,13 @@ function(declare_port specifier result)
   )
 
   parse_fetch_specifier(${specifier} target args)
+
+  # An empty GIT_SUBMODULES is dropped when this list is expanded into
+  # ExternalProject_Add, so the submodules are switched off through the clone's
+  # own config instead.
+  if(DEFINED ARGV_SUBMODULES AND NOT ARGV_SUBMODULES)
+    list(APPEND args GIT_CONFIG submodule.active=none)
+  endif()
 
   set(prefix "${CMAKE_CURRENT_BINARY_DIR}/_ports/${target}")
 
