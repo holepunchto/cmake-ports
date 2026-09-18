@@ -51,7 +51,7 @@ The remaining options are:
 
 #### `find_port(<name> [FEATURES <feature...>])`
 
-Locate and include the port named `<name>`, which declares its targets by calling `declare_port()`. The port is first looked up at `cmake/ports/<name>/port.cmake` within the consuming project, allowing projects to provide their own ports, and otherwise resolved from the ports bundled with `cmake-ports`.
+Locate and include the port named `<name>`, which declares its targets by calling `declare_port()`. The port is looked up at `cmake/ports/<name>/port.cmake` within the consuming project.
 
 `FEATURES <feature...>` requests optional features from the port. The requested features are exposed to the port's `port.cmake` through the `features` variable, which the port reads to conditionally enable functionality, for example an extra dependency or codec. A port with a `lib` prefix, such as `libheif`, is matched against features by its unprefixed name, such as `heif`.
 

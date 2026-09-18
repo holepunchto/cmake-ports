@@ -362,11 +362,7 @@ function(find_port name)
 
   set(features ${ARGV_FEATURES})
 
-  include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/ports/${name}/port.cmake" OPTIONAL RESULT_VARIABLE path)
-
-  if(path MATCHES "NOTFOUND")
-    include("${ports_module_dir}/ports/${name}/port.cmake")
-  endif()
+  include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/ports/${name}/port.cmake")
 
   if(name MATCHES "^lib(.+)")
     set(name "${CMAKE_MATCH_1}")
