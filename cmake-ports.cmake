@@ -6,8 +6,6 @@ find_package(cmake-zig REQUIRED PATHS node_modules/cmake-zig)
 
 set(ports_module_dir "${CMAKE_CURRENT_LIST_DIR}")
 
-include(ExternalProject)
-
 cmake_host_system_information(RESULT jobs QUERY NUMBER_OF_LOGICAL_CORES)
 
 if(jobs EQUAL 0)
@@ -231,6 +229,8 @@ macro(configure_zig_port)
 endmacro()
 
 function(declare_port specifier result)
+  include(ExternalProject)
+
   set(option_keywords
     CMAKE
     MESON
@@ -240,6 +240,7 @@ function(declare_port specifier result)
 
   set(one_value_keywords
     ENTRYPOINT
+    SUBMODULES
   )
 
   set(multi_value_keywords
@@ -266,6 +267,13 @@ function(declare_port specifier result)
   # so a different archive is a different port.
   if("URL" IN_LIST args)
     list(APPEND args DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
+  endif()
+
+  # An empty GIT_SUBMODULES is dropped when this list is expanded into
+  # ExternalProject_Add, so the submodules are switched off through the clone's
+  # own config instead.
+  if(DEFINED ARGV_SUBMODULES AND NOT ARGV_SUBMODULES)
+    list(APPEND args GIT_CONFIG submodule.active=none)
   endif()
 
   set(prefix "${CMAKE_CURRENT_BINARY_DIR}/_ports/${target}")
