@@ -3,8 +3,7 @@
   "version": "1.11.0",
   "description": "Simple build recipe manager for CMake based on `ExternalProject`",
   "files": [
-    "*.cmake",
-    "ports"
+    "*.cmake"
   ],
   "scripts": {
     "test": "cmake -P test.cmake"
