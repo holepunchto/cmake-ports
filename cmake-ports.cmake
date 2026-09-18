@@ -258,6 +258,17 @@ function(declare_port specifier result)
 
   parse_fetch_specifier(${specifier} target args)
 
+  # Keep the timestamps an archive was released with. CMP0135 stamps extracted
+  # files with the time of extraction instead, which leaves their order down to
+  # the order they were written: a release tarball that ships generated sources
+  # alongside the data they came from then looks stale to make, and it reaches
+  # for the tools that generated them. The hazard that policy guards against
+  # does not arise here, as a port is named after a digest of its specifier and
+  # so a different archive is a different port.
+  if("URL" IN_LIST args)
+    list(APPEND args DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
+  endif()
+
   # An empty GIT_SUBMODULES is dropped when this list is expanded into
   # ExternalProject_Add, so the submodules are switched off through the clone's
   # own config instead.
